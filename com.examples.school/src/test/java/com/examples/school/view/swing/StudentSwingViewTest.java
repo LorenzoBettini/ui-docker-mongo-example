@@ -97,9 +97,7 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 	@Test
 	public void testShowErrorShouldShowTheMessageInTheErrorLabel() {
 		Student student = new Student("1", "test1");
-		GuiActionRunner.execute(
-			() -> studentSwingView.showError("error message", student)
-		);
+		studentSwingView.showError("error message", student);
 		window.label("errorMessageLabel")
 			.requireText("error message: " + student);
 	}
@@ -107,10 +105,7 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 	@Test
 	public void testStudentAddedShouldAddTheStudentToTheListAndResetTheErrorLabel() {
 		Student student = new Student("1", "test1");
-		GuiActionRunner.execute(
-				() ->
-				studentSwingView.studentAdded(new Student("1", "test1"))
-				);
+		studentSwingView.studentAdded(new Student("1", "test1"));
 		String[] listContents = window.list().contents();
 		assertThat(listContents).containsExactly(student.toString());
 		window.label("errorMessageLabel").requireText(" ");
@@ -128,11 +123,7 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 				listStudentsModel.addElement(student2);
 			}
 		);
-		// execute
-		GuiActionRunner.execute(
-			() ->
-			studentSwingView.studentRemoved(new Student("1", "test1"))
-		);
+		studentSwingView.studentRemoved(new Student("1", "test1"));
 		// verify
 		String[] listContents = window.list().contents();
 		assertThat(listContents).containsExactly(student2.toString());

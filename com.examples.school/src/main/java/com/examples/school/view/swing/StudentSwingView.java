@@ -20,7 +20,8 @@ import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
+
+import static javax.swing.SwingUtilities.invokeLater;
 
 import java.awt.Color;
 import java.awt.event.KeyAdapter;
@@ -174,25 +175,30 @@ public class StudentSwingView extends JFrame implements StudentView {
 
 	@Override
 	public void showAllStudents(List<Student> students) {
-		SwingUtilities.invokeLater(
+		invokeLater(
 			() -> students.stream().forEach(listStudentsModel::addElement));
 	}
 
 	@Override
 	public void showError(String message, Student student) {
-		lblErrorMessage.setText(message + ": " + student);
+		invokeLater(
+			() -> lblErrorMessage.setText(message + ": " + student));
 	}
 
 	@Override
 	public void studentAdded(Student student) {
-		listStudentsModel.addElement(student);
-		resetErrorLabel();
+		invokeLater(() -> {
+			listStudentsModel.addElement(student);
+			resetErrorLabel();
+		});
 	}
 
 	@Override
 	public void studentRemoved(Student student) {
-		listStudentsModel.removeElement(student);
-		resetErrorLabel();
+		invokeLater(() -> {
+			listStudentsModel.removeElement(student);
+			resetErrorLabel();
+		});
 	}
 
 	private void resetErrorLabel() {
