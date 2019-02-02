@@ -139,7 +139,14 @@ public class StudentSwingView extends JFrame implements StudentView {
 		btnAdd.addActionListener(
 			e -> {
 				new Thread(() ->
-					schoolController.newStudent(new Student(txtId.getText(), txtName.getText()))
+					{
+						try {
+							Thread.sleep(2000);
+						} catch (InterruptedException e1) {
+							e1.printStackTrace();
+						}
+						schoolController.newStudent(new Student(txtId.getText(), txtName.getText()));
+					}
 				).start();
 			});
 		GridBagConstraints gbc_btnAdd = new GridBagConstraints();
