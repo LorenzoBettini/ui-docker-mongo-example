@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.examples.school.controller.SchoolController;
 import com.examples.school.model.Student;
 import com.examples.school.view.StudentView;
 import javax.swing.JTextField;
@@ -42,6 +43,8 @@ public class StudentSwingView extends JFrame implements StudentView {
 
 	private DefaultListModel<Student> listStudentsModel;
 
+	private SchoolController schoolController;
+
 	/**
 	 * Launch the application.
 	 */
@@ -61,6 +64,10 @@ public class StudentSwingView extends JFrame implements StudentView {
 
 	DefaultListModel<Student> getListStudentsModel() {
 		return listStudentsModel;
+	}
+
+	public void setSchoolController(SchoolController schoolController) {
+		this.schoolController = schoolController;
 	}
 
 	/**
@@ -129,6 +136,8 @@ public class StudentSwingView extends JFrame implements StudentView {
 		
 		btnAdd = new JButton("Add");
 		btnAdd.setEnabled(false);
+		btnAdd.addActionListener(
+				e -> schoolController.newStudent(new Student(txtId.getText(), txtName.getText())));
 		GridBagConstraints gbc_btnAdd = new GridBagConstraints();
 		gbc_btnAdd.insets = new Insets(0, 0, 5, 0);
 		gbc_btnAdd.gridwidth = 2;
@@ -155,6 +164,8 @@ public class StudentSwingView extends JFrame implements StudentView {
 		
 		btnDeleteSelected = new JButton("Delete Selected");
 		btnDeleteSelected.setEnabled(false);
+		btnDeleteSelected.addActionListener(
+				e -> schoolController.deleteStudent(listStudents.getSelectedValue()));
 		GridBagConstraints gbc_btnDeleteSelected = new GridBagConstraints();
 		gbc_btnDeleteSelected.insets = new Insets(0, 0, 5, 0);
 		gbc_btnDeleteSelected.gridwidth = 2;
