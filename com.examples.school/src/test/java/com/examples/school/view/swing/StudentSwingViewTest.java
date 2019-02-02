@@ -85,10 +85,8 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 	public void testsShowAllStudentsShouldAddStudentDescriptionsToTheList() {
 		Student student1 = new Student("1", "test1");
 		Student student2 = new Student("2", "test2");
-		GuiActionRunner.execute(
-			() -> studentSwingView.showAllStudents(
-					Arrays.asList(student1, student2))
-		);
+		studentSwingView.showAllStudents(
+					Arrays.asList(student1, student2));
 		String[] listContents = window.list().contents();
 		assertThat(listContents)
 			.containsExactly(student1.toString(), student2.toString());
