@@ -175,15 +175,7 @@ public class StudentSwingView extends JFrame implements StudentView {
 	@Override
 	public void showAllStudents(List<Student> students) {
 		SwingUtilities.invokeLater(
-			() -> {
-				try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				students.stream().forEach(listStudentsModel::addElement);
-			});
+			() -> students.stream().forEach(listStudentsModel::addElement));
 	}
 
 	@Override
