@@ -1,7 +1,7 @@
 package com.examples.school.view.swing;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
 
@@ -27,6 +27,8 @@ import com.examples.school.model.Student;
 
 @RunWith(GUITestRunner.class)
 public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
+
+	private static final int MOCKITO_TIMEOUT = 5000;
 
 	private FrameFixture window;
 
@@ -145,7 +147,8 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.textBox("idTextBox").enterText("1");
 		window.textBox("nameTextBox").enterText("test");
 		window.button(JButtonMatcher.withText("Add")).click();
-		verify(schoolController).newStudent(new Student("1", "test"));
+		verify(schoolController, timeout(MOCKITO_TIMEOUT))
+			.newStudent(new Student("1", "test"));
 	}
 
 	@Test
