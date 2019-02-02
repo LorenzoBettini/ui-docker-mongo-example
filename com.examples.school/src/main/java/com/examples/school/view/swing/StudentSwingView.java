@@ -180,19 +180,22 @@ public class StudentSwingView extends JFrame implements StudentView {
 
 	@Override
 	public void showError(String message, Student student) {
-		// TODO Auto-generated method stub
-		
+		lblErrorMessage.setText(message + ": " + student);
 	}
 
 	@Override
 	public void studentAdded(Student student) {
-		// TODO Auto-generated method stub
-		
+		listStudentsModel.addElement(student);
+		resetErrorLabel();
 	}
 
 	@Override
 	public void studentRemoved(Student student) {
-		// TODO Auto-generated method stub
-		
+		listStudentsModel.removeElement(student);
+		resetErrorLabel();
+	}
+
+	private void resetErrorLabel() {
+		lblErrorMessage.setText(" ");
 	}
 }
