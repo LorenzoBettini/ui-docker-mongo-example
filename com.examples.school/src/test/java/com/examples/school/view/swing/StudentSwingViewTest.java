@@ -164,6 +164,7 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 		);
 		window.list("studentList").selectItem(1);
 		window.button(JButtonMatcher.withText("Delete Selected")).click();
-		verify(schoolController).deleteStudent(student2);
+		verify(schoolController, timeout(MOCKITO_TIMEOUT))
+			.deleteStudent(student2);
 	}
 }
