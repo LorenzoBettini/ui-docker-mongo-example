@@ -190,7 +190,9 @@ public class StudentSwingView extends JFrame implements StudentView {
 
 	@Override
 	public void showError(String message, Student student) {
-		lblErrorMessage.setText(message + ": " + student);
+		SwingUtilities.invokeLater(() ->
+			lblErrorMessage.setText(message + ": " + student)
+		);
 	}
 
 	@Override

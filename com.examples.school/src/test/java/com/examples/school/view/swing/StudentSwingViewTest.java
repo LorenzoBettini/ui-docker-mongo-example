@@ -109,9 +109,7 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 	@Test
 	public void testShowErrorShouldShowTheMessageInTheErrorLabel() {
 		Student student = new Student("1", "test1");
-		GuiActionRunner.execute(
-			() -> studentSwingView.showError("error message", student)
-		);
+		studentSwingView.showError("error message", student);
 		window.label("errorMessageLabel")
 			.requireText("error message: " + student);
 	}
