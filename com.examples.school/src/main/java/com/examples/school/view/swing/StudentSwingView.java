@@ -21,6 +21,8 @@ import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
+
 import java.awt.Color;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -193,8 +195,10 @@ public class StudentSwingView extends JFrame implements StudentView {
 
 	@Override
 	public void studentAdded(Student student) {
-		listStudentsModel.addElement(student);
-		resetErrorLabel();
+		SwingUtilities.invokeLater(() -> {
+			listStudentsModel.addElement(student);
+			resetErrorLabel();
+		});
 	}
 
 	@Override
