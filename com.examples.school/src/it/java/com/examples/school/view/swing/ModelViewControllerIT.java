@@ -1,6 +1,9 @@
 package com.examples.school.view.swing;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
+
+import java.util.concurrent.TimeUnit;
 
 import org.assertj.swing.core.matcher.JButtonMatcher;
 import org.assertj.swing.edt.GuiActionRunner;
@@ -64,8 +67,10 @@ public class ModelViewControllerIT extends AssertJSwingJUnitTestCase {
 		window.textBox("nameTextBox").enterText("test");
 		window.button(JButtonMatcher.withText("Add")).click();
 		// ...verify that it has been added to the database
-		assertThat(studentRepository.findById("1"))
-			.isEqualTo(new Student("1", "test"));
+		await().atMost(5, TimeUnit.SECONDS).untilAsserted(() ->
+			assertThat(studentRepository.findById("1"))
+				.isEqualTo(new Student("1", "test"))
+		);
 	}
 
 	@Test
