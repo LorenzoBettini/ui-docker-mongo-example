@@ -1,8 +1,13 @@
 package com.examples.school.view.swing;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.swing.timing.Pause.pause;
+import static org.assertj.swing.timing.Timeout.timeout;
+
+import static org.awaitility.Awaitility.*;
 
 import java.net.InetSocketAddress;
+import java.util.concurrent.TimeUnit;
 
 import org.assertj.swing.annotation.GUITest;
 import org.assertj.swing.core.matcher.JButtonMatcher;
@@ -10,6 +15,7 @@ import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.runner.GUITestRunner;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
+import org.assertj.swing.timing.Condition;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -26,6 +32,7 @@ import de.bwaldvogel.mongo.backend.memory.MemoryBackend;
 
 @RunWith(GUITestRunner.class)
 public class StudentSwingViewIT extends AssertJSwingJUnitTestCase {
+	private static final long TIMEOUT = 5000;
 	private static MongoServer server;
 	private static InetSocketAddress serverAddress;
 
@@ -91,8 +98,10 @@ public class StudentSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.textBox("idTextBox").enterText("1");
 		window.textBox("nameTextBox").enterText("test");
 		window.button(JButtonMatcher.withText("Add")).click();
-		assertThat(window.list().contents())
-			.containsExactly(new Student("1", "test").toString());
+		await().atMost(5, TimeUnit.SECONDS).untilAsserted(() ->
+			assertThat(window.list().contents())
+				.containsExactly(new Student("1", "test").toString())
+		);
 	}
 
 	@Test @GUITest
@@ -101,6 +110,15 @@ public class StudentSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.textBox("idTextBox").enterText("1");
 		window.textBox("nameTextBox").enterText("test");
 		window.button(JButtonMatcher.withText("Add")).click();
+		pause(
+			new Condition("Error label to contain text") {
+				@Override
+				public boolean test() {
+					return !window.label("errorMessageLabel")
+						.text().trim().isEmpty();
+				}
+			}
+		, timeout(TIMEOUT));
 		assertThat(window.list().contents())
 			.isEmpty();
 		window.label("errorMessageLabel")
