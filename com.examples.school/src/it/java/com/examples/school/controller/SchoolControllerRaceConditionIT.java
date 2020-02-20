@@ -54,7 +54,7 @@ public class SchoolControllerRaceConditionIT {
 		MongoCollection<Document> studentCollection =
 			database.getCollection(STUDENT_COLLECTION_NAME);
 		// A unique index ensures that the indexed field
-		// (in this case "id") do not store duplicate values:
+		// (in this case "id") does not store duplicate values:
 		studentCollection.createIndex(
 			Indexes.ascending("id"), new IndexOptions().unique(true));
 		studentRepository = new StudentMongoRepository(client);
