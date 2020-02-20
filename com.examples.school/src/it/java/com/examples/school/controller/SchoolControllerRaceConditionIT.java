@@ -1,6 +1,7 @@
 package com.examples.school.controller;
 
 import static com.examples.school.repository.mongo.StudentMongoRepository.SCHOOL_DB_NAME;
+import static com.examples.school.repository.mongo.StudentMongoRepository.STUDENT_COLLECTION_NAME;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.bson.Document;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -19,7 +21,10 @@ import com.examples.school.repository.StudentRepository;
 import com.examples.school.repository.mongo.StudentMongoRepository;
 import com.examples.school.view.StudentView;
 import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.IndexOptions;
+import com.mongodb.client.model.Indexes;
 
 /**
  * Communicates with a MongoDB server on localhost; start MongoDB with Docker with
@@ -45,6 +50,12 @@ public class SchoolControllerRaceConditionIT {
 		MongoDatabase database = client.getDatabase(SCHOOL_DB_NAME);
 		// make sure we always start with a clean database
 		database.drop();
+		MongoCollection<Document> studentCollection =
+			database.getCollection(STUDENT_COLLECTION_NAME);
+		// A unique index ensures that the indexed field
+		// (in this case "id") do not store duplicate values:
+		studentCollection.createIndex(
+			Indexes.ascending("id"), new IndexOptions().unique(true));
 		studentRepository = new StudentMongoRepository(client);
 	}
 
