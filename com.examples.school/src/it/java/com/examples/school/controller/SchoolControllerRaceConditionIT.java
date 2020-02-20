@@ -21,6 +21,7 @@ import com.examples.school.repository.StudentRepository;
 import com.examples.school.repository.mongo.StudentMongoRepository;
 import com.examples.school.view.StudentView;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoWriteException;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.IndexOptions;
@@ -67,9 +68,16 @@ public class SchoolControllerRaceConditionIT {
 		// methods in the controller will not help...
 		List<Thread> threads = IntStream.range(0, 10)
 			.mapToObj(i -> new Thread(
-				() -> 
-				new SchoolController(studentView, studentRepository)
-					.newStudent(student)))
+				() -> {
+					try {
+						new SchoolController(studentView, studentRepository)
+							.newStudent(student);
+					} catch (MongoWriteException e) {
+						// E11000 duplicate key error collection:
+						// school.student index: id_1 dup key: { id: "1" }
+						e.printStackTrace();
+					}
+				}))
 			.peek(t -> t.start())
 			.collect(Collectors.toList());
 		// wait for all the threads to finish
