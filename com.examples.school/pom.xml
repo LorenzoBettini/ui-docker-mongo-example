@@ -30,7 +30,7 @@
       <!-- required to see Mongo Java Driver logs -->
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.2.3</version>
+      <version>1.2.13</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -116,7 +116,7 @@
         <configuration>
           <images>
             <image>
-              <name>mongo:4.4.3</name>
+              <name>mongo:5</name>
               <run>
                 <ports>
                   <port>mongo.mapped.port:27017</port>
