@@ -22,7 +22,7 @@ import com.mongodb.ServerAddress;
 public class ModelViewControllerIT extends AssertJSwingJUnitTestCase {
 	@ClassRule
 	public static final MongoDBContainer mongo =
-		new MongoDBContainer("mongo:4.4.3");
+		new MongoDBContainer("mongo:5");
 
 	private MongoClient mongoClient;
 
